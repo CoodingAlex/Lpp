@@ -17,11 +17,10 @@ class TokenType(Enum):
     INT = auto()
     LBRACE = auto()
     LET = auto()
-    LPARENT = auto()
-    LPARENT = auto()
+    LPAREN = auto()
     PLUS = auto()
     RBRACE = auto()
-    RPARENT = auto()
+    RPAREN = auto()
     SEMICOLON = auto()
 
 class Token(NamedTuple):
