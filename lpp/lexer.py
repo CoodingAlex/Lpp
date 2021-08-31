@@ -35,6 +35,18 @@ class Lexer:
             token = Token(TokenType.COMMA, self._character)
         elif match(r'^;$', self._character):
             token = Token(TokenType.SEMICOLON, self._character)
+        elif match(r'^<$', self._character):
+            token = Token(TokenType.LT, '<')
+        elif match(r'^>$', self._character):
+            token = Token(TokenType.GT, '>')
+        elif match(r'^-$', self._character):
+            token = Token(TokenType.MINUS, '-')
+        elif match(r'^/$', self._character):
+            token = Token(TokenType.DIVISION, '/')
+        elif match(r'^\*$', self._character):
+            token = Token(TokenType.MULTIPLICATION, '*')
+        elif match(r'^!$', self._character):
+            token = Token(TokenType.NEGATION, '!')
         elif self._is_letter(self._character):
             literal = self._read_identifier()
             token_type = lookup_token_type(literal)

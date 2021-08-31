@@ -13,16 +13,27 @@ from typing import (
 class TokenType(Enum):
     ASSIGN = auto()
     COMMA = auto()
+    DIVISION = auto()
     EOF = auto()
+    ELSE = auto()
+    FALSE = auto()
     FUNCTION = auto()
+    GT = auto()
     IDENT = auto()
+    IF = auto()
     ILLEGAL = auto()
     INT = auto()
     LBRACE = auto()
     LET = auto()
     LPAREN = auto()
+    LT = auto()
+    MINUS = auto()
+    MULTIPLICATION = auto()
+    NEGATION = auto()
     PLUS = auto()
+    TRUE = auto()
     RBRACE = auto()
+    RETURN = auto()
     RPAREN = auto()
     SEMICOLON = auto()
 
@@ -35,8 +46,14 @@ class Token(NamedTuple):
 
 def lookup_token_type(literal: str) -> TokenType:
     keywords: Dict[str, TokenType] = {
+        'falso': TokenType.FALSE,
+        'si': TokenType.IF,
         'procedimiento': TokenType.FUNCTION,
-        'variable': TokenType.LET
+        'regresa': TokenType.RETURN,
+        'si': TokenType.IF,
+        'si_no': TokenType.ELSE,
+        'variable': TokenType.LET,
+        'verdadero': TokenType.TRUE
     }
 
     return keywords.get(literal, TokenType.IDENT)
