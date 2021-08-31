@@ -7,6 +7,7 @@ from lpp.token import (
 )
 from lpp.lexer import Lexer
 
+
 class LexerTest(TestCase):
 
     def test_illegal(self) -> None:
@@ -35,13 +36,13 @@ class LexerTest(TestCase):
 
         expected_tokens: List[Token] = [
             Token(TokenType.ASSIGN, '='),
-            Token(TokenType.PLUS,  '+'),
-            Token(TokenType.MINUS,  '-'),
-            Token(TokenType.DIVISION,  '/'),
-            Token(TokenType.MULTIPLICATION,  '*'),
-            Token(TokenType.LT,  '<'),
-            Token(TokenType.GT,  '>'),
-            Token(TokenType.NEGATION,  '!'),
+            Token(TokenType.PLUS, '+'),
+            Token(TokenType.MINUS, '-'),
+            Token(TokenType.DIVISION, '/'),
+            Token(TokenType.MULTIPLICATION, '*'),
+            Token(TokenType.LT, '<'),
+            Token(TokenType.GT, '>'),
+            Token(TokenType.NEGATION, '!'),
         ]
 
         self.assertEquals(tokens, expected_tokens)
@@ -104,7 +105,7 @@ class LexerTest(TestCase):
                 x + y;
             };
         '''
-        lexer: Lexer= Lexer(source)
+        lexer: Lexer = Lexer(source)
 
         tokens: List[Token] = []
         for i in range(16):
@@ -214,7 +215,7 @@ class LexerTest(TestCase):
         ]
 
         self.assertEquals(tokens, expected_tokens)
-    
+
     def test_variable_name_with_number(self):
         source: str = 'variable alex_1 = 2;'
         lexer: Lexer = Lexer(source)
