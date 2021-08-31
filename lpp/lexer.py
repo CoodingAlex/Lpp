@@ -1,10 +1,11 @@
-from re import match
+from re import S, match
 
 from lpp.token import (
     Token,
     TokenType,
     lookup_token_type
 )
+
 
 class Lexer:
     def __init__(self, source: str) -> None:
@@ -72,7 +73,7 @@ class Lexer:
         return bool(match(r'^[a-záéíóúA-ZÁÉÍÓÚñÑ_]$', character))
 
     def _is_number(self, character: str) -> bool:
-        return bool(match(r'^\d$',character))
+        return bool(match(r'^\d$', character))
 
     def _make_two_character_token(self, token_type: TokenType) -> Token:
         prefix = self._character
