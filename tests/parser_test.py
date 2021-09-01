@@ -92,3 +92,16 @@ class ParserTest(TestCase):
         for statement in program.statements:
             self.assertEquals(statement.token_literal(), 'regresa')
             self.assertIsInstance(statement, ReturnStatement)
+
+    def test_identifier_expression(self) -> None:
+        source: str = 'foobar;'
+        lexer: Lexer = Lexer(source)
+        parser: Parser = Parser(lexer)
+
+        program: Program = parser.parse_program()
+
+        self._test_program_statements(parser, program)
+
+        expression_statement = cast(ExpressionStatement, program.statements[0])
+
+        assert expression_statement is not None

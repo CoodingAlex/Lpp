@@ -95,4 +95,4 @@ class ReturnStatement(Statement):
         self.return_value = return_value
 
     def __str__(self) -> str:
-        return f'{self.token_literal()} {str(self.return_value)}'
+        return f'{self.token_literal()} {str(self.return_value)};'
