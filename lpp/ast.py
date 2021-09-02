@@ -60,7 +60,7 @@ class Program(ASTNode):
 
 
 class Identifier(Expression):
-    
+
     def __init__(self,
                  token: Token,
                  value: str) -> None:
@@ -82,17 +82,28 @@ class LetStatement(Statement):
         self.name = name
         self.value = value
 
-
     def __str__(self) -> str:
         return f'{self.token_literal()} {str(self.name)} = {str(self.value)};'
+
 
 class ReturnStatement(Statement):
 
     def __init__(self,
-                token: Token,
-                return_value: Optional[Expression] = None) -> None:
+                 token: Token,
+                 return_value: Optional[Expression] = None) -> None:
         super().__init__(token)
         self.return_value = return_value
 
     def __str__(self) -> str:
         return f'{self.token_literal()} {str(self.return_value)};'
+
+
+class ExpressionStatement(Statement):
+    def __init__(self,
+                 token: Token,
+                 expression: Optional[Expression] = None) -> None:
+        super().__init__(token)
+        self.expression = expression
+
+    def __str__(self) -> str:
+        return str(self.expression)
