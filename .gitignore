@@ -4,4 +4,4 @@
 .mypy_cache/
 __pycache__/
 venv/
-.noseids
+.noseids/
