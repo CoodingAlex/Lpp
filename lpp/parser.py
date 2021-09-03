@@ -1,9 +1,9 @@
 from enum import IntEnum
 from typing import (
     Callable,
-    DefaultDict,
+
     Dict,
-    Mapping,
+
     Optional,
     List
 )
@@ -16,6 +16,7 @@ from lpp.ast import (
     Statement,
     LetStatement,
     Identifier,
+    Prefix,
     ReturnStatement,
 )
 from lpp.lexer import Lexer
@@ -97,6 +98,8 @@ class Parser:
         try:
             prefix_parse_fn = self._prefix_parse_fns[self._current_token.token_type]
         except KeyError:
+            message = f'No se encontro ninguna funcion para parsear {self._current_token.literal}'
+            self._errors.append(message)
             return None
 
         left_expression = prefix_parse_fn()
@@ -177,6 +180,16 @@ class Parser:
         else:
             return self._parse_expression_statement()
 
+    def _parse_prefix_expression(self) -> Prefix:
+        assert self._current_token is not None
+        prefix_expression = Prefix(token=self._current_token,
+                                   operator=self._current_token.literal)
+        self._advance_tokens()
+
+        prefix_expression.right = self._parse_expression(Precedence.PREFIX)
+
+        return prefix_expression
+
     def _register_infix_fns(self) -> InfixParseFns:
         return {}
 
@@ -184,4 +197,6 @@ class Parser:
         return {
             TokenType.IDENT: self._parse_identifier,
             TokenType.INT: self._parse_integer,
+            TokenType.MINUS: self._parse_prefix_expression,
+            TokenType.NEGATION: self._parse_prefix_expression
         }
