@@ -1,5 +1,6 @@
 from typing import (
     Any,
+    Tuple,
     cast,
     List,
     Type
@@ -9,6 +10,7 @@ from unittest import TestCase
 from lpp.ast import (
     Program,
     Integer,
+    Infix,
     LetStatement,
     Identifier,
     Expression,
@@ -115,6 +117,45 @@ class ParserTest(TestCase):
         self._test_literal_expression(
             expression_statement.expression, 'foobar')
 
+    def test_infix_operators(self) -> None:
+        source: str = '''
+            5 + 5;
+            5 - 5;
+            5 * 5;
+            5 / 5;
+            5 > 5;
+            5 < 5;
+            5 == 5;
+            5 != 5;
+        '''
+
+        lexer: Lexer = Lexer(source)
+        parser: Parser = Parser(lexer)
+
+        program: Program = parser.parse_program()
+
+        self._test_program_statements(parser, program, expected_statements=8)
+
+        expected_operators_and_values: List[Tuple[Any, str, Any]] = [
+            (5, '+', 5),
+            (5, '-', 5),
+            (5, '*', 5),
+            (5, '/', 5),
+            (5, '>', 5),
+            (5, '<', 5),
+            (5, '==', 5),
+            (5, '!=', 5),
+        ]
+
+        for statement, (expected_left, expected_operator, expected_right) in zip(
+                program.statements, expected_operators_and_values):
+            statement = cast(ExpressionStatement, statement)
+            self.assertIsInstance(statement.expression, Infix)
+            self._test_infix_expression(statement.expression,
+                                        expected_left,
+                                        expected_operator,
+                                        expected_right)
+
     def test_integer_expressions(self):
         source: str = '5;'
         lexer: Lexer = Lexer(source)
@@ -146,6 +187,21 @@ class ParserTest(TestCase):
 
             assert prefix.right is not None
             self._test_literal_expression(prefix.right, expected_value)
+
+    def _test_infix_expression(self,
+                               expression,
+                               expected_left,
+                               expected_operator,
+                               expected_right):
+        infix = cast(Infix, expression)
+
+        assert infix.left is not None
+        self._test_literal_expression(infix.left, expected_left)
+
+        self.assertEquals(infix.operator, expected_operator)
+
+        assert infix.right is not None
+        self._test_literal_expression(infix.right, expected_right)
 
     def _test_program_statements(self,
                                  parser: Parser,
